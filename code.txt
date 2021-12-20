@@ -1,0 +1,37 @@
+def camera(cam_o):
+    pygame.draw.polygon(
+        WIN,
+        BLUE,
+        [
+            (cam_o.x, cam_o.y),
+            (cam_o.x - 50, cam_o.y + 150),
+            (cam_o.x + 50, cam_o.y + 150),
+        ],
+        width=0,
+    )
+
+
+
+
+class AbstractPlayer:
+    def __init__(self, max_vspeed, rotation_vspeed)
+        self.max_vspeed = max_vspeed
+        self.vspeed = 0
+        self.rotation_vspeed = rotation_vspeed
+        self.angle = 0
+
+    def rotate(self, left=false, right = false)
+        if left:
+            self.angle += slef.rotation_vspeed
+        elif right:
+            self.angle -= self.rotation_vspeed
+
+
+
+    # self.vspeed = min(self.vspeed + V_ACCELERATION, self.MAX_VSPEED)
+    # if player_o.collide(BACKGROUND_BORDER_MASK) == None:
+    
+    offset = (int(player_o.x), int(player_o.y))
+    overlap = BACKGROUND_BORDER_MASK.overlap(PLAYER_MASK, (offset))
+    if overlap:
+        print("The two masks overlap!", overlap)
