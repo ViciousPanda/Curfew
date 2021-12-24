@@ -17,9 +17,6 @@ BACKGROUND = pygame.image.load("assets/background_1.png")
 BACKGROUND_BORDER = pygame.image.load("assets/background_1_mask.png")
 BACKGROUND_BORDER_MASK = pygame.mask.from_surface(BACKGROUND_BORDER)
 BORDER = pygame.Rect(0, 0, 10, WIDTH)
-FINISH = pygame.image.load("assets/finish.png")
-FINISH_MASK = pygame.mask.from_surface(FINISH)
-FINISH_POS = (785, 315)
 
 # Game Declarations
 FPS = 60
@@ -51,7 +48,7 @@ ENEMY_1 = pygame.transform.rotate(
 # pygame.draw.rect(WIN, BLACK, 640, 360, 20, 20)
 
 
-class Abstract:
+class Abstract_Enemy:
     def __init__(self, max_vel, rotation_vel):
         self.img = self.IMG
         self.max_vel = max_vel
@@ -71,9 +68,24 @@ class Abstract:
 
 
 # class Player:
-class player(Abstract):
-    IMG = PLAYER
-    START_POS = (50, 290)
+class player(pygame.sprite.Sprite):
+    # IMG = PLAYER
+    def __init__(self, pos_x, pos_y):
+        self.sprites = []
+        self.sprites.append(pygame.image.load("assets/player_001.png"))
+        self.sprites.append(pygame.image.load("assets/player_002.png"))
+        self.current_sprite = 0
+        self.image = self.sprites[self.current_sprite]
+        self.rect = self.image.get_rect()
+        self.rect.topleft = [pos_x, pos_y]
+        self.left = False
+        self.x, self.y = pos_x, pos_y
+
+    def update(self):
+        self.current_sprite += 1
+        if self.current_sprite >= len(self.sprites):
+            self.current_sprite = 0
+        self.image = self.sprites[self.current_sprite]
 
     # Collision
     def collide(self, mask, x=0, y=0):
@@ -82,20 +94,32 @@ class player(Abstract):
         poi = mask.overlap(player_mask, offset)
         return poi
 
+    def draw(self, win):
+        if self.left:
+            self.image = pygame.transform.flip(self.image, False, True)
+            win.blit(self.image, self.x, self.y)
+        else:
+            win.blit(self.image, self.x, self.y)
 
-class enemy_camera(Abstract):
+
+class enemy_camera(Abstract_Enemy):
     IMG = ENEMY_1
     START_POS = (190, 200)
 
 
 # Draw objects
-def draw_window(win, images, player_o, enemy_o):
+def draw_window(player_o, enemy_o):
+    # Background
+    WIN.fill(WHITE)
+    WIN.blit(BACKGROUND, (0, 0))
 
-    for img, pos in images:
-        win.blit(img, pos)
+    # Box
+    # pygame.draw.rect(WIN, BLACK, BORDER)
 
-    player_o.draw(win)
-    enemy_o.draw(win)
+    player_o.draw(WIN)
+    enemy_o.draw(WIN)
+
+    player_o.update()
 
     pygame.display.update()
 
@@ -106,6 +130,7 @@ def player_movement(keys_pressed, player_o):
     ) and player_o.x - vspeed > 0:  # LEFT
         offset = (int(player_o.x - vspeed), int(player_o.y))
         overlap = BACKGROUND_BORDER_MASK.overlap(PLAYER_MASK, (offset))
+        player_o.left = True
         if not overlap:
             player_o.x -= vspeed
     if (
@@ -113,6 +138,7 @@ def player_movement(keys_pressed, player_o):
     ) and player_o.x - vspeed < WIDTH - PLAYER_WIDTH:  # RIGHT
         offset = (int(player_o.x + vspeed), int(player_o.y))
         overlap = BACKGROUND_BORDER_MASK.overlap(PLAYER_MASK, (offset))
+        player_o.left = False
         if not overlap:
             player_o.x += vspeed
     if (
@@ -132,8 +158,7 @@ def player_movement(keys_pressed, player_o):
 
 
 def main():
-    images = [(BACKGROUND, (0, 0)), (FINISH, FINISH_POS)]
-    player_o = player(4, 4)
+    player_o = player(50, 290)
     enemy_o = enemy_camera(4, 4)
     clock = pygame.time.Clock()
     run = True
@@ -147,10 +172,8 @@ def main():
 
         keys_pressed = pygame.key.get_pressed()
         player_movement(keys_pressed, player_o)
-        draw_window(WIN, images, player_o, enemy_o)
 
-        if player_o.collide(FINISH_MASK, *FINISH_POS) != None:
-            print("FINISH")
+        draw_window(player_o, enemy_o)
 
     pygame.quit()
 
