@@ -13,7 +13,7 @@ def blit_rotate_center(win, image, top_left, angle):
 
 
 def blit_text_center(win, font, text):
-    render = font.render(text, 2, (50, 50, 50))
+    render = font.render(text, 1, (255, 255, 255))
     win.blit(
         render, (win.get_width() / 2 - render.get_width() / 2, win.get_height() / 3.5)
     )

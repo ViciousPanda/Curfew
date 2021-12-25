@@ -83,7 +83,7 @@ class GameInfo:
     def get_level_time(self):
         if not self.started:
             return 0
-        return self.level_start_time - time.time
+        return round(time.time() - self.level_start_time)
 
 
 # class enemies
@@ -135,10 +135,24 @@ class player:
 
 
 # Draw objects
-def draw_window(win, images, player_o, enemy_o):
+def draw_window(win, images, player_o, enemy_o, game_info):
 
     for img, pos in images:
         win.blit(img, pos)
+
+    # Level Info
+    level_text = MAIN_FONT.render(f"Level: {game_info.level}", 1, WHITE)
+    win.blit(
+        level_text,
+        (WIDTH - level_text.get_width() - 10, HEIGHT - level_text.get_height() - 10),
+    )
+
+    # Time Info
+    time_text = MAIN_FONT.render(f"Time: {game_info.get_level_time()}", 1, WHITE)
+    win.blit(
+        time_text,
+        (WIDTH - time_text.get_width() - 10, HEIGHT - time_text.get_height() - 40),
+    )
 
     player_o.draw(win)
     enemy_o.draw(win)
@@ -188,12 +202,10 @@ def main():
     while run:
         clock.tick(FPS)
 
-        draw_window(WIN, images, player_o, enemy_o)
+        draw_window(WIN, images, player_o, enemy_o, game_info)
 
         while not game_info.started:
-            blit_text_center(
-                WIN, MAIN_FONT, f"Press any key to start level {game_info.level}"
-            )
+            blit_text_center(WIN, MAIN_FONT, f"Press any key to start")
             pygame.display.update()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
