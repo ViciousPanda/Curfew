@@ -15,11 +15,11 @@ WIDTH, HEIGHT = 800, 600
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Curfew")  # Title
 
-BACKGROUND = pygame.image.load("assets/background_1.png")
-BACKGROUND_BORDER = pygame.image.load("assets/background_1_mask.png")
+BACKGROUND = pygame.image.load(os.path.join('curfew/assets', 'background_1.png'))
+BACKGROUND_BORDER = pygame.image.load(os.path.join('curfew/assets', 'background_1_mask.png'))
 BACKGROUND_BORDER_MASK = pygame.mask.from_surface(BACKGROUND_BORDER)
 BORDER = pygame.Rect(0, 0, 10, WIDTH)
-FINISH = pygame.image.load("assets/finish.png")
+FINISH = pygame.image.load(os.path.join('curfew/assets', 'finish.png'))
 FINISH_MASK = pygame.mask.from_surface(FINISH)
 FINISH_POS = (785, 315)
 
@@ -39,13 +39,13 @@ BLUE = (0, 0, 245)
 
 # Player sprite
 PLAYER_WIDTH, PLAYER_HEIGHT = 32, 32
-PLAYER_IMAGE = pygame.image.load(os.path.join("assets", "player_001.png"))
+PLAYER_IMAGE = pygame.image.load(os.path.join('curfew/assets', 'player_001.png'))
 PLAYER = pygame.transform.scale(PLAYER_IMAGE, (PLAYER_WIDTH, PLAYER_HEIGHT))
 PLAYER_MASK = pygame.mask.from_surface(PLAYER)
 
 # enemy sprite
 ENEMY_1 = pygame.transform.rotate(
-    pygame.image.load(os.path.join("assets", "camera_002.png")), TURN
+    pygame.image.load(os.path.join('curfew/assets', 'camera_002.png')), TURN
 )
 
 MAIN_FONT = pygame.font.SysFont("79", 44)

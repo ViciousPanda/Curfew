@@ -12,6 +12,10 @@ TODO
 
 The CS50 course is my appetizer to the CS50 Game Development. This project signifies a move into that direction. The game does not need to be a full fleched game, but instead a prototype in which I work with the core concepts of gamemaking. The game will be in Python, so to apply the skill which I have learned over the last weeks, before moving on to LUA and C++.
 
+##### technical:
+
+Curfew runs with PyGame. You can install this by following the instructions on their website: https://www.pygame.org/wiki/GettingStarted
+
 ##### Features:
 
 - a movable character
